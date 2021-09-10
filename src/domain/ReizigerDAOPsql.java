@@ -1,8 +1,7 @@
 package domain;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
+import java.sql.*;
+import java.util.ArrayList;
 import java.util.List;
 
 public class ReizigerDAOPsql implements ReizigerDAO{
@@ -68,31 +67,81 @@ public class ReizigerDAOPsql implements ReizigerDAO{
     }
 
     @Override
-    public Reiziger findByID(int id) {
+    public Reiziger findByID(int id2) {
         try {
-            PreparedStatement state = myConn.prepareStatement("GET FROM reiziger WHERE reiziger_id = ?");
+            Statement stat = myConn.createStatement();
+            ResultSet res = stat.executeQuery("SELECT * FROM reiziger");
 
-            state.setInt(1, (reiziger.getId()));
-            state.setString(2, reiziger.getVoorletters());
-            state.setString(3, reiziger.getTussenvoegsel());
-            state.setString(4, reiziger.getAchternaam());
-            state.setDate(5, reiziger.getGeboortedatum());
-            state.executeUpdate();
+            while (res.next()) {
+                int id = res.getInt("reiziger_id");
+                String voorl = res.getString("voorletters");
+                String tussen = res.getString("tussenvoegsel");
+                String achtern = res.getString("achternaam");
+                Date geb = res.getDate("geboortedatum");
 
-            return null;
-        }
-        catch(Exception e){
+                if (id == id2) {
+                    Reiziger r2 = new Reiziger(id, voorl, tussen, achtern, geb);
+                    return r2;
+                }
+
+            }
+
+        } catch (Exception e) {
             e.printStackTrace();
+            return null;
         }
         return null;
     }
 
     @Override
     public List<Reiziger> findByGbdatum(String datum) {
-        return null;
+        try{
+            List<Reiziger> reizigerList = new ArrayList<Reiziger>();
+            Statement stat = myConn.createStatement();
+            ResultSet set = stat.executeQuery("SELECT * FROM reiziger");
+            while(set.next()){
+                if(set.getDate(5).equals(Date.valueOf(datum))){
+                    Reiziger reiz = new Reiziger(set.getInt(1),
+                            set.getString(2),
+                            set.getString(3),
+                            set.getString(4),
+                            set.getDate(5)
+                            );
+
+                    reizigerList.add(reiz);
+                }
+            }
+            return reizigerList;
+        }catch(Exception e){
+            e.printStackTrace();
+            return null;
+        }
     }
 
     @Override
     public List<Reiziger> findAll() {
-        return null;
+        try{
+            List<Reiziger> reizigerList = new ArrayList<Reiziger>();
+            Statement stat = myConn.createStatement();
+            ResultSet set = stat.executeQuery("SELECT * FROM reiziger");
+            while(set.next()){
+                Reiziger reiz = new Reiziger(set.getInt(1),
+                        set.getString(2),
+                        set.getString(3),
+                        set.getString(4),
+                        set.getDate(5)
+                );
+
+                reizigerList.add(reiz);
+            }
+            set.close();
+            stat.close();
+            if(reizigerList.size() < 1){
+
+            }
+        }
+        catch(Exception e){
+            e.printStackTrace();
+            return null;
+        }
     }}
