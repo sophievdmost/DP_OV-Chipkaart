@@ -8,7 +8,9 @@ public class Main {
         try{
             Connection myConn = DriverManager.getConnection("jdbc:postgresql://localhost:5432/ovchimps" ,"postgres", "0611");
             ReizigerDAOPsql dao = new ReizigerDAOPsql(myConn);
+            AdresDAOsql dao2 = new AdresDAOsql(myConn);
 
+            testAdresDAO(dao2);
             testReizigerDAO(dao);
         }
         catch(Exception e){
@@ -79,4 +81,26 @@ public class Main {
 
 
     }
-}
+
+    private static void testAdresDAO(AdresDAO adao){
+        try {
+            System.out.println("\n---------- Test AdresDAO -------------");
+
+            // Haal alle reizigers op uit de database
+            List<Adres> adressen = adao.findAll();
+            System.out.println("[Test] AdresDAO.findAll() geeft de volgende adressen:");
+            for (Adres a : adressen) {
+                System.out.println(a);
+            }
+            System.out.println();
+
+            // Maak een nieuwe adres aan en persisteer deze in de database
+            Adres siet = new Adres(6);
+            ///System.out.print("[Test] Eerst " + reizigers.size() + " reizigers, na ReizigerDAO.save() ");
+            //rdao.save(sietske);
+            //reizigers = rdao.findAll();
+            // System.out.println(reizigers.size() + " reizigers\n");
+
+        }catch(Exception e){
+        e.printStackTrace();}
+    }}

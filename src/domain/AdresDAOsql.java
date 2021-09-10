@@ -6,6 +6,11 @@ import java.util.List;
 
 public class AdresDAOsql implements AdresDAO {
     private Connection myConn;
+
+    public AdresDAOsql(Connection myConn) {
+        this.myConn = myConn;
+    }
+
     @Override
     public boolean save(Adres adres) {
         try{
