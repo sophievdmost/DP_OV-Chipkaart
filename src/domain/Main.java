@@ -7,28 +7,13 @@ public class Main {
     public static void main(String[] args){
         try{
             Connection myConn = DriverManager.getConnection("jdbc:postgresql://localhost:5432/ovchimps" ,"postgres", "0611");
-            Statement st = myConn.createStatement();
-            ResultSet rs = st.executeQuery("SELECT * FROM reiziger;");
-            System.out.println("Alle reizgers:");
-            while (rs.next()) {
-                int id = rs.getInt("reiziger_id");
-                String voorletter = rs.getString("voorletters");
-                String tussenvoegsel = rs.getString("tussenvoegsel");
-                String achternaam = rs.getString("achternaam");
-                Date geboortedatum = rs.getDate("Geboortedatum");
+            ReizigerDAOPsql dao = new ReizigerDAOPsql(myConn);
 
-                if (tussenvoegsel == null){
-                    tussenvoegsel = "";
-                }
-
-                String str = voorletter+ ". " + tussenvoegsel+ " " + achternaam+ " (" + geboortedatum + ")";
-                System.out.println(str);
-            }
-            rs.close();
-            st.close();
+            testReizigerDAO(dao);
         }
         catch(Exception e){
             e.printStackTrace();
+            System.out.println(e);
         }
 
     }
@@ -39,6 +24,7 @@ public class Main {
     ///  * @throws SQLException
 
     private static void testReizigerDAO(ReizigerDAO rdao) throws SQLException {
+        try{
         System.out.println("\n---------- Test ReizigerDAO -------------");
 
         // Haal alle reizigers op uit de database
@@ -55,7 +41,10 @@ public class Main {
         System.out.print("[Test] Eerst " + reizigers.size() + " reizigers, na ReizigerDAO.save() ");
         rdao.save(sietske);
         reizigers = rdao.findAll();
-        System.out.println(reizigers.size() + " reizigers\n");
+        System.out.println(reizigers.size() + " reizigers\n");}
+        catch(Exception e){
+            e.printStackTrace();
+        }
 
         // Voeg aanvullende tests van de ontbrekende CRUD-operaties in.
     }
