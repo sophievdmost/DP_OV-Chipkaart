@@ -95,7 +95,7 @@ public class Main {
             System.out.println();
 
             // Maak een nieuwe adres aan en persisteer deze in de database
-            Adres siet = new Adres(6);
+            Adres siet = new Adres("s");
             ///System.out.print("[Test] Eerst " + reizigers.size() + " reizigers, na ReizigerDAO.save() ");
             //rdao.save(sietske);
             //reizigers = rdao.findAll();
