@@ -14,15 +14,16 @@ public class ReizigerDAOPsql implements ReizigerDAO{
     @Override
     public boolean save(Reiziger reiziger) {
         try{
-        PreparedStatement stat = myConn.prepareStatement("INSERT INTO reiziger( reiziger_id, voorletters, tussenvoegsel,achternaam, geboortedatum)" +
-        "VALUES (?,?,?,?,?");
+        PreparedStatement stat = myConn.prepareStatement("INSERT INTO reiziger ( reiziger_id, voorletters, tussenvoegsel,achternaam, geboortedatum)" +
+        "VALUES (?,?,?,?,?)");
         stat.setInt(1, reiziger.getId());
         stat.setString(2, reiziger.getVoorletters());
         stat.setString(3, reiziger.getTussenvoegsel());
         stat.setString(4, reiziger.getAchternaam());
         stat.setDate(5, reiziger.getGeboortedatum());
         stat.executeUpdate();
-        return true;}
+        return true;
+        }
         catch(Exception e){
             e.printStackTrace();
             return false;
@@ -33,13 +34,13 @@ public class ReizigerDAOPsql implements ReizigerDAO{
     @Override
     public boolean update(Reiziger reiziger) {
         try{
-            PreparedStatement stat = myConn.prepareStatement("UPDATE reiziger SET reiziger_ID = ?, voorletters = ?, tussenvoegsel = ? achternaam = ?, geboortedatum =? WHERE reiziger_id = ?");
+            PreparedStatement stat = myConn.prepareStatement("UPDATE reiziger SET voorletters = ?, tussenvoegsel = ? ,achternaam = ?, geboortedatum =? WHERE reiziger_id = ?");
 
-            stat.setInt(1, (reiziger.getId()));
-            stat.setString(2, reiziger.getVoorletters());
-            stat.setString(3, reiziger.getTussenvoegsel());
-            stat.setString(4, reiziger.getAchternaam());
-            stat.setDate(5, reiziger.getGeboortedatum());
+            stat.setString(1, reiziger.getVoorletters());
+            stat.setString(2, reiziger.getTussenvoegsel());
+            stat.setString(3, reiziger.getAchternaam());
+            stat.setDate(4, reiziger.getGeboortedatum());
+            stat.setInt(5, reiziger.getId());
             stat.executeUpdate();
             return true;
         }
@@ -54,8 +55,7 @@ public class ReizigerDAOPsql implements ReizigerDAO{
     public boolean delete(Reiziger reiziger) {
         try{
             PreparedStatement st = myConn.prepareStatement("DELETE FROM reiziger WHERE reiziger_id = ?");
-
-            st.setInt(1,reiziger.getId());
+            st.setInt(1, reiziger.getId());
             st.executeUpdate();
             return true;
         }
@@ -81,6 +81,7 @@ public class ReizigerDAOPsql implements ReizigerDAO{
 
                 if (id == id2) {
                     Reiziger r2 = new Reiziger(id, voorl, tussen, achtern, geb);
+                    System.out.println(r2);
                     return r2;
                 }
 
@@ -107,7 +108,7 @@ public class ReizigerDAOPsql implements ReizigerDAO{
                             set.getString(4),
                             set.getDate(5)
                             );
-
+                    System.out.println(reiz);
                     reizigerList.add(reiz);
                 }
             }

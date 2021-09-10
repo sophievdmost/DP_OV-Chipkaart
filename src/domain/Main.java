@@ -41,11 +41,42 @@ public class Main {
         System.out.print("[Test] Eerst " + reizigers.size() + " reizigers, na ReizigerDAO.save() ");
         rdao.save(sietske);
         reizigers = rdao.findAll();
-        System.out.println(reizigers.size() + " reizigers\n");}
+        System.out.println(reizigers.size() + " reizigers\n");
+
+        //update
+            reizigers =  rdao.findAll();
+            System.out.println("[Test] update van reiziger " );
+            Reiziger test = new Reiziger(77, "p", "", "Boers",java.sql.Date.valueOf(gbdatum));
+        rdao.update(test);
+            System.out.println(sietske.getVoorletters() + " naamtest");
+        reizigers =rdao.findAll();
+        System.out.println("naam is nu " + test.getVoorletters());
+
+
+        //findByid test
+            System.out.println("[Test] vinden bij ID");
+            System.out.println("Het id is:" + sietske.getId());
+            rdao.findByID(77);
+        //findByGB test
+
+            System.out.println("[test] vinden bij geboortedatum");
+            System.out.println("We gebruiken deze geboorte datum:" + sietske.getGeboortedatum());
+            rdao.findByGbdatum("1981-03-14");
+
+
+        //delete test
+
+            System.out.println("[Test] delete de nieuwe " + test.getId());
+            rdao.delete(test);
+            reizigers = rdao.findAll();
+            System.out.println("Er zijn nu" + reizigers.size()+ " reizigers");
+        }
+
+
         catch(Exception e){
             e.printStackTrace();
         }
 
-        // Voeg aanvullende tests van de ontbrekende CRUD-operaties in.
+
     }
 }
