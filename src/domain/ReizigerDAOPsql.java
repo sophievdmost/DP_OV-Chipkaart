@@ -137,8 +137,9 @@ public class ReizigerDAOPsql implements ReizigerDAO{
             set.close();
             stat.close();
             if(reizigerList.size() < 1){
-
+                    throw new IllegalArgumentException();
             }
+            return reizigerList;
         }
         catch(Exception e){
             e.printStackTrace();
