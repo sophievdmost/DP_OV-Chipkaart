@@ -6,16 +6,34 @@ public class Adres {
     private String huisnummer;
     private String straat;
     private String woonplaats;
-    private int reisigerid;
+    private Reiziger reiziger;
 
-    public Adres(int id, String postcode, String huisnummer, String straat, String woonplaats, int reisigerid) {
+    public Adres(int id, String postcode, String huisnummer, String straat, String woonplaats, Reiziger reiziger) {
         this.id = id;
         this.postcode = postcode;
         this.huisnummer = huisnummer;
         this.straat=straat;
         this.woonplaats=woonplaats;
-        this.reisigerid=reisigerid;
+        this.reiziger = reiziger;
+
     }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getPostcode() {
+        return postcode;
+    }
+
+    public void setPostcode(String postcode) {
+        this.postcode = postcode;
+    }
+
 
     public String getHuisnummer() {
         return huisnummer;
@@ -42,41 +60,26 @@ public class Adres {
     }
 
     public int getReisigerid() {
-        return reisigerid;
+        return reiziger.getId();
     }
 
     public void setReisigerid(int reisigerid) {
-        this.reisigerid = reisigerid;
+        reiziger.setId(reisigerid);
     }
 
-    public Adres(String straat) {
-        this.straat = straat;
-    }
 
-    public int getId() {
-        return id;
-    }
 
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getPostcode() {
-        return postcode;
-    }
-
-    public void setPostcode(String postcode) {
-        this.postcode = postcode;
-    }
 
     @Override
     public String toString() {
         return "Adres{" +
                 "id=" + id +
                 ", postcode='" + postcode + '\'' +
+                ", huisnummer='" + huisnummer + '\'' +
+                ", straat='" + straat + '\'' +
+                ", woonplaats='" + woonplaats + '\'' +
+                ", reisigerid=" + reiziger.getId() +
                 '}';
     }
-
-
 }
 

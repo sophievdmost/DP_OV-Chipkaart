@@ -7,11 +7,13 @@ public class Main {
     public static void main(String[] args){
         try{
             Connection myConn = DriverManager.getConnection("jdbc:postgresql://localhost:5432/ovchimps" ,"postgres", "0611");
-            ReizigerDAOPsql dao = new ReizigerDAOPsql(myConn);
-            AdresDAOsql dao2 = new AdresDAOsql(myConn);
+            ReizigerDAOPsql rdao = new ReizigerDAOPsql(myConn);
+            AdresDAOsql adao = new AdresDAOsql(myConn, rdao);
+            rdao = new ReizigerDAOPsql(myConn, adao);
 
-            testAdresDAO(dao2);
-            testReizigerDAO(dao);
+
+            testReizigerDAO(rdao);
+            testAdresDAO(adao,rdao);
         }
         catch(Exception e){
             e.printStackTrace();
@@ -52,7 +54,7 @@ public class Main {
         rdao.update(test);
             System.out.println(sietske.getVoorletters() + " naamtest");
         reizigers =rdao.findAll();
-        System.out.println("naam is nu " + test.getVoorletters());
+        System.out.println("naam is nu: " + test.getVoorletters()+ "\n");
 
 
         //findByid test
@@ -61,17 +63,17 @@ public class Main {
             rdao.findByID(77);
         //findByGB test
 
-            System.out.println("[test] vinden bij geboortedatum");
+            System.out.println( "\n" + "[test] vinden bij geboortedatum" );
             System.out.println("We gebruiken deze geboorte datum:" + sietske.getGeboortedatum());
             rdao.findByGbdatum("1981-03-14");
 
 
         //delete test
 
-            System.out.println("[Test] delete de nieuwe " + test.getId());
+            System.out.println(  "\n"+ "[Test] delete de nieuwe reiziger om alles te resetten:  " + test.getId());
             rdao.delete(test);
             reizigers = rdao.findAll();
-            System.out.println("Er zijn nu" + reizigers.size()+ " reizigers");
+            System.out.println("Er zijn nu: " + reizigers.size()+ " reizigers" + "\n");
         }
 
 
@@ -82,24 +84,50 @@ public class Main {
 
     }
 
-    private static void testAdresDAO(AdresDAO adao){
+    private static void testAdresDAO(AdresDAO adao, ReizigerDAO rdao){
         try {
             System.out.println("\n---------- Test AdresDAO -------------");
+            String gbdatum = "1981-03-14";
+           Reiziger sietske = new Reiziger(77, "S", "", "Boers", java.sql.Date.valueOf(gbdatum));
+           rdao.save(sietske);
+           Adres siet = new Adres(69, "3831VP", "1", "van heemstrastraat", "Driebergen", sietske);
+            // Haal alle adressen op uit de database
 
-            // Haal alle reizigers op uit de database
-            List<Adres> adressen = adao.findAll();
+
             System.out.println("[Test] AdresDAO.findAll() geeft de volgende adressen:");
+            List<Adres> adressen = adao.findAll();
             for (Adres a : adressen) {
                 System.out.println(a);
             }
             System.out.println();
 
             // Maak een nieuwe adres aan en persisteer deze in de database
-            Adres siet = new Adres("s");
-            ///System.out.print("[Test] Eerst " + reizigers.size() + " reizigers, na ReizigerDAO.save() ");
-            //rdao.save(sietske);
-            //reizigers = rdao.findAll();
-            // System.out.println(reizigers.size() + " reizigers\n");
+            System.out.print("[Test] Eerst " + adressen.size() + " adressen, na AdressenDAO.save() ");
+            adao.save(siet);
+            adressen = adao.findAll();
+            System.out.println(adressen.size() + " adressen\n");
+
+            //update
+            adressen =  adao.findAll();
+            System.out.println("[Test] update van een adres " );
+            System.out.println("Adres was: " + siet);
+            Adres test = new Adres(69, "6969VP", "2", "van mopestraat", "Driebergen", sietske);
+            adao.update(test);
+            System.out.println("adres is nu: ");
+            adao.findByReiziger(sietske);
+
+            //find by reiziger
+            System.out.println("\n" + "[Test] find by reiziger");
+            System.out.println("We gebruiken deze reizger: " + sietske +"\n dus het adres is: ");
+            adao.findByReiziger(sietske);
+            //delete
+            System.out.println("\n" + "[Test] delete adres");
+            adressen = adao.findAll();
+            System.out.println(adressen.size() + " adressen\n");
+            adao.delete(test);
+            adressen = adao.findAll();
+            System.out.println(adressen.size() + " adressen\n");
+            rdao.delete(sietske);
 
         }catch(Exception e){
         e.printStackTrace();}

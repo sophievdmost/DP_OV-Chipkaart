@@ -6,9 +6,19 @@ import java.util.List;
 
 public class AdresDAOsql implements AdresDAO {
     private Connection myConn;
+    private ReizigerDAO rdao;
 
     public AdresDAOsql(Connection myConn) {
         this.myConn = myConn;
+    }
+
+    public AdresDAOsql(Connection myConn, ReizigerDAO rdao){
+        this.myConn = myConn;
+        this.rdao = rdao;
+    }
+
+    public void setReizigerDAO(ReizigerDAO rdao){
+        this.rdao = rdao;
     }
 
     @Override
@@ -75,11 +85,12 @@ public class AdresDAOsql implements AdresDAO {
             ResultSet set = stat.executeQuery("SELECT * FROM adres");
             while (set.next()) {
                 if (set.getInt(6) == reiziger.getId()) {
-                    Adres ad = new Adres(set.getInt(1 ), set.getString(2),
+                    Adres ad = new Adres(set.getInt(1 ),
+                            set.getString(2),
                     set.getString(3),
                     set.getString(4),
                     set.getString(5),
-                    set.getInt(6)
+                            reiziger
                     );
                     System.out.println(ad);
                     return ad;
@@ -106,7 +117,8 @@ public class AdresDAOsql implements AdresDAO {
                         set.getString(3),
                         set.getString(4),
                         set.getString(5),
-                        set.getInt(6)
+                        rdao.findByID(set.getInt(6))
+
                 );
 
                 Adressen.add(ad);

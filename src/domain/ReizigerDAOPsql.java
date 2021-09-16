@@ -6,9 +6,18 @@ import java.util.List;
 
 public class ReizigerDAOPsql implements ReizigerDAO{
    private Connection myConn;
+   private AdresDAO adao;
 
     public ReizigerDAOPsql(Connection myConn) {
         this.myConn = myConn;
+    }
+    public ReizigerDAOPsql(Connection myConn, AdresDAO adao){
+        this.myConn = myConn;
+        this.adao = adao;
+    }
+
+    public void setAdresDao(AdresDAO adao){
+        this.adao = adao;
     }
 
     @Override
@@ -81,7 +90,6 @@ public class ReizigerDAOPsql implements ReizigerDAO{
 
                 if (id == id2) {
                     Reiziger r2 = new Reiziger(id, voorl, tussen, achtern, geb);
-                    System.out.println(r2);
                     return r2;
                 }
 
