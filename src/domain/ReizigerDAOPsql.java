@@ -25,6 +25,9 @@ public class ReizigerDAOPsql implements ReizigerDAO{
         try{
         PreparedStatement stat = myConn.prepareStatement("INSERT INTO reiziger ( reiziger_id, voorletters, tussenvoegsel,achternaam, geboortedatum)" +
         "VALUES (?,?,?,?,?)");
+        if(reiziger.getAdres() != null){
+                adao.save(reiziger.getAdres());
+            }
         stat.setInt(1, reiziger.getId());
         stat.setString(2, reiziger.getVoorletters());
         stat.setString(3, reiziger.getTussenvoegsel());
@@ -44,7 +47,9 @@ public class ReizigerDAOPsql implements ReizigerDAO{
     public boolean update(Reiziger reiziger) {
         try{
             PreparedStatement stat = myConn.prepareStatement("UPDATE reiziger SET voorletters = ?, tussenvoegsel = ? ,achternaam = ?, geboortedatum =? WHERE reiziger_id = ?");
-
+            if(reiziger.getAdres() != null){
+                adao.update(reiziger.getAdres());
+            }
             stat.setString(1, reiziger.getVoorletters());
             stat.setString(2, reiziger.getTussenvoegsel());
             stat.setString(3, reiziger.getAchternaam());
@@ -63,6 +68,10 @@ public class ReizigerDAOPsql implements ReizigerDAO{
     @Override
     public boolean delete(Reiziger reiziger) {
         try{
+            if(reiziger.getAdres() != null){
+                AdresDAOsql adaop = new AdresDAOsql(myConn);
+                adaop.delete(reiziger.getAdres());
+            }
             PreparedStatement st = myConn.prepareStatement("DELETE FROM reiziger WHERE reiziger_id = ?");
             st.setInt(1, reiziger.getId());
             st.executeUpdate();
@@ -80,17 +89,20 @@ public class ReizigerDAOPsql implements ReizigerDAO{
         try {
             Statement stat = myConn.createStatement();
             ResultSet res = stat.executeQuery("SELECT * FROM reiziger");
-
             while (res.next()) {
                 int id = res.getInt("reiziger_id");
                 String voorl = res.getString("voorletters");
                 String tussen = res.getString("tussenvoegsel");
                 String achtern = res.getString("achternaam");
                 Date geb = res.getDate("geboortedatum");
-
                 if (id == id2) {
-                    Reiziger r2 = new Reiziger(id, voorl, tussen, achtern, geb);
-                    return r2;
+                    Reiziger reiziger = new Reiziger(id, voorl, tussen, achtern, geb);
+                    if (reiziger.getAdres() != null){
+                        Adres adres = adao.findByReiziger(reiziger);
+                        reiziger.setAdres(adres);
+                    }
+
+                    return reiziger;
                 }
 
             }
@@ -116,6 +128,10 @@ public class ReizigerDAOPsql implements ReizigerDAO{
                             set.getString(4),
                             set.getDate(5)
                             );
+                    if (reiz.getAdres() != null){
+                        Adres adres = adao.findByReiziger(reiz);
+                        reiz.setAdres(adres);
+                    }
                     System.out.println(reiz);
                     reizigerList.add(reiz);
                 }
@@ -140,7 +156,10 @@ public class ReizigerDAOPsql implements ReizigerDAO{
                         set.getString(4),
                         set.getDate(5)
                 );
-
+                if (reiz.getAdres() != null){
+                    Adres adres = adao.findByReiziger(reiz);
+                    reiz.setAdres(adres);
+                }
                 reizigerList.add(reiz);
             }
             set.close();
