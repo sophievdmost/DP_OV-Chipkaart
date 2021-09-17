@@ -173,6 +173,10 @@ public class Main {
             System.out.println("\n" + "[Test] find by reiziger");
             System.out.println("We gebruiken deze reizger: " + sietske +"\n dus de kaart is: ");
             ovdao.findbyReiziger(sietske);
+            //findByid test
+            System.out.println("[Test] vinden bij ID");
+            System.out.println("Het id is:" + siets.getKaart_nummer());
+            ovdao.findByID(69);
 
             //delete
             System.out.println("\n" + "[Test] delete kaart");

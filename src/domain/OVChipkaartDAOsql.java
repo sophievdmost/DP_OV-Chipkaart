@@ -73,32 +73,31 @@ public class OVChipkaartDAOsql implements OVChipkaartDAO {
 
     }
 
-//    @Override
-//    public OVChipkaart findByID(int id2) {
-//        try {
-//            Statement stat = myConn.createStatement();
-//            ResultSet res = stat.executeQuery("SELECT * FROM ov_chipkaart");
-//            while (res.next()) {
-//                int id = res.getInt("reiziger_id");
-//                int kaartnummer = res.getInt("kaart_nummer");
-//                Date geldigtot = res.getDate("geldig_tot");
-//                int klasse = res.getInt("klasse");
-//                String saldo = res.getString("saldo");
-//                if (id == id2) {
-//                    OVChipkaart ovChipkaart = new OVChipkaart(kaartnummer,geldigtot,klasse,saldo,id);
-//
-//
-//                    return ovChipkaart;
-//                }
-//
-//            }
-//
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//            return null;
-//        }
-//        return null;
-//    }
+    @Override
+    public OVChipkaart findByID(int id2) {
+        try {
+            Statement stat = myConn.createStatement();
+            ResultSet res = stat.executeQuery("SELECT * FROM ov_chipkaart");
+            while (res.next()) {
+                Reiziger reiziger_id = rdao.findByID(res.getInt("reiziger_id"));
+                int id = res.getInt("kaart_nummer");
+                Date geldigtot = res.getDate("geldig_tot");
+                int klasse = res.getInt("klasse");
+                int saldo = res.getInt("saldo");
+                if (id == id2) {
+                    OVChipkaart ovChipkaart = new OVChipkaart(id,geldigtot,klasse,saldo,reiziger_id);
+                    System.out.println(ovChipkaart);
+                    return ovChipkaart;
+                }
+
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+        return null;
+    }
 
     @Override
     public List<OVChipkaart> findAll() {

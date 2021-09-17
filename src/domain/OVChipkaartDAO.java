@@ -7,7 +7,7 @@ public interface OVChipkaartDAO {
     boolean save(OVChipkaart ovChipkaart) throws SQLException;
     boolean update(OVChipkaart ovChipkaart);
     boolean delete(OVChipkaart ovChipkaart);
-    ///OVChipkaart findByID(int id);
+    OVChipkaart findByID(int kaart_nummer);
     List<OVChipkaart> findAll();
     List<OVChipkaart> findbyReiziger(Reiziger reiziger);
 }
