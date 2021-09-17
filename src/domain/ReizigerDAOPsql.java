@@ -7,13 +7,15 @@ import java.util.List;
 public class ReizigerDAOPsql implements ReizigerDAO{
    private Connection myConn;
    private AdresDAO adao;
+   private OVChipkaartDAO ovdao;
 
     public ReizigerDAOPsql(Connection myConn) {
         this.myConn = myConn;
     }
-    public ReizigerDAOPsql(Connection myConn, AdresDAO adao){
+    public ReizigerDAOPsql(Connection myConn, AdresDAO adao, OVChipkaartDAO ovdao){
         this.myConn = myConn;
         this.adao = adao;
+        this.ovdao = ovdao;
     }
 
     public void setAdresDao(AdresDAO adao){
@@ -28,6 +30,9 @@ public class ReizigerDAOPsql implements ReizigerDAO{
         if(reiziger.getAdres() != null){
                 adao.save(reiziger.getAdres());
             }
+        if (reiziger.getOvChipkaart() != null){
+            ovdao.save(reiziger.getOvChipkaart());
+        }
         stat.setInt(1, reiziger.getId());
         stat.setString(2, reiziger.getVoorletters());
         stat.setString(3, reiziger.getTussenvoegsel());
@@ -50,6 +55,9 @@ public class ReizigerDAOPsql implements ReizigerDAO{
             if(reiziger.getAdres() != null){
                 adao.update(reiziger.getAdres());
             }
+            if (reiziger.getOvChipkaart() != null){
+                ovdao.update(reiziger.getOvChipkaart());
+            }
             stat.setString(1, reiziger.getVoorletters());
             stat.setString(2, reiziger.getTussenvoegsel());
             stat.setString(3, reiziger.getAchternaam());
@@ -71,6 +79,9 @@ public class ReizigerDAOPsql implements ReizigerDAO{
             if(reiziger.getAdres() != null){
                 AdresDAOsql adaop = new AdresDAOsql(myConn);
                 adaop.delete(reiziger.getAdres());
+            }
+            if (reiziger.getOvChipkaart() != null){
+                ovdao.delete(reiziger.getOvChipkaart());
             }
             PreparedStatement st = myConn.prepareStatement("DELETE FROM reiziger WHERE reiziger_id = ?");
             st.setInt(1, reiziger.getId());
@@ -100,6 +111,10 @@ public class ReizigerDAOPsql implements ReizigerDAO{
                     if (reiziger.getAdres() != null){
                         Adres adres = adao.findByReiziger(reiziger);
                         reiziger.setAdres(adres);
+                    }
+                    if (reiziger.getOvChipkaart() != null){
+                        OVChipkaart ov = (OVChipkaart) ovdao.findbyReiziger(reiziger);
+                        reiziger.setOvChipkaart(ov);
                     }
 
                     return reiziger;
@@ -132,6 +147,11 @@ public class ReizigerDAOPsql implements ReizigerDAO{
                         Adres adres = adao.findByReiziger(reiz);
                         reiz.setAdres(adres);
                     }
+                    if (reiz.getOvChipkaart() != null){
+                        OVChipkaart ov = (OVChipkaart) ovdao.findbyReiziger(reiz);
+                        reiz.setOvChipkaart(ov);
+                    }
+
                     System.out.println(reiz);
                     reizigerList.add(reiz);
                 }
@@ -159,6 +179,10 @@ public class ReizigerDAOPsql implements ReizigerDAO{
                 if (reiz.getAdres() != null){
                     Adres adres = adao.findByReiziger(reiz);
                     reiz.setAdres(adres);
+                }
+                if (reiz.getOvChipkaart() != null){
+                    OVChipkaart ov = (OVChipkaart) ovdao.findbyReiziger(reiz);
+                    reiz.setOvChipkaart(ov);
                 }
                 reizigerList.add(reiz);
             }

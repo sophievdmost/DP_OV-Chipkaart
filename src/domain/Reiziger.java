@@ -9,6 +9,7 @@ public class Reiziger {
     private String achternaam;
     private Date geboortedatum;
     private Adres adres;
+    private OVChipkaart ovChipkaart;
 
     public Reiziger(int id, String voorletters, String tussenvoegsel, String achternaam, Date geboortedatum){
         this.id= id;
@@ -24,6 +25,14 @@ public class Reiziger {
 
     public void setAdres(Adres adres) {
         this.adres = adres;
+    }
+
+    public OVChipkaart getOvChipkaart() {
+        return ovChipkaart;
+    }
+
+    public void setOvChipkaart(OVChipkaart ovChipkaart) {
+        this.ovChipkaart = ovChipkaart;
     }
 
     public int getId() {

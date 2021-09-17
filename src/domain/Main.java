@@ -9,9 +9,8 @@ public class Main {
             Connection myConn = DriverManager.getConnection("jdbc:postgresql://localhost:5432/ovchimps" ,"postgres", "0611");
             ReizigerDAOPsql rdao = new ReizigerDAOPsql(myConn);
             AdresDAOsql adao = new AdresDAOsql(myConn, rdao);
-            rdao = new ReizigerDAOPsql(myConn, adao);
-
             OVChipkaartDAOsql ovdao = new OVChipkaartDAOsql(myConn, rdao);
+            rdao = new ReizigerDAOPsql(myConn, adao, ovdao);
 
 
             testReizigerDAO(rdao);
