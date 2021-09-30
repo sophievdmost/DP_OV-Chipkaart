@@ -1,6 +1,10 @@
-package domain;
+package domain.interfaces;
+
+import domain.domein.Adres;
+import domain.domein.OVChipkaart;
 
 import java.sql.Date;
+import java.util.List;
 
 public class Reiziger {
     private int id;
@@ -9,7 +13,7 @@ public class Reiziger {
     private String achternaam;
     private Date geboortedatum;
     private Adres adres;
-    private OVChipkaart ovChipkaart;
+    private List<OVChipkaart> ovChipkaart;
 
     public Reiziger(int id, String voorletters, String tussenvoegsel, String achternaam, Date geboortedatum){
         this.id= id;
@@ -27,12 +31,14 @@ public class Reiziger {
         this.adres = adres;
     }
 
-    public OVChipkaart getOvChipkaart() {
+    public List<OVChipkaart> getOvChipkaart() {
         return ovChipkaart;
     }
 
+
+
     public void setOvChipkaart(OVChipkaart ovChipkaart) {
-        this.ovChipkaart = ovChipkaart;
+        this.ovChipkaart = (List<OVChipkaart>) ovChipkaart;
     }
 
     public int getId() {

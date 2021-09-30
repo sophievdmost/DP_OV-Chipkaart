@@ -1,4 +1,4 @@
-package domain;
+package domain.interfaces;
 
 import java.sql.SQLException;
 import java.util.List;

@@ -1,6 +1,16 @@
 package domain;
 
+import domain.DAO.AdresDAOsql;
+import domain.DAO.OVChipkaartDAOsql;
+import domain.DAO.ReizigerDAOPsql;
+import domain.domein.Adres;
+import domain.domein.OVChipkaart;
+import domain.interfaces.AdresDAO;
+import domain.interfaces.Reiziger;
+import domain.interfaces.ReizigerDAO;
+
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Main {
@@ -63,15 +73,14 @@ public class Main {
             System.out.println("[Test] vinden bij ID");
             System.out.println("Het id is:" + sietske.getId());
             rdao.findByID(77);
-        //findByGB test
 
+        //findByGB test
             System.out.println( "\n" + "[test] vinden bij geboortedatum" );
             System.out.println("We gebruiken deze geboorte datum:" + sietske.getGeboortedatum());
             rdao.findByGbdatum("1981-03-14");
 
 
         //delete test
-
             System.out.println(  "\n"+ "[Test] delete de nieuwe reiziger om alles te resetten:  " + test.getId());
             System.out.println("Er zijn nu: " + reizigers.size()+ " reizigers" + "\n");
             rdao.delete(test);
@@ -94,9 +103,8 @@ public class Main {
            Reiziger sietske = new Reiziger(77, "S", "", "Boers", java.sql.Date.valueOf(gbdatum));
            rdao.save(sietske);
            Adres siet = new Adres(69, "3831VP", "1", "van heemstrastraat", "Driebergen", sietske);
+
             // Haal alle adressen op uit de database
-
-
             System.out.println("[Test] AdresDAO.findAll() geeft de volgende adressen:");
             List<Adres> adressen = adao.findAll();
             for (Adres a : adressen) {
@@ -123,6 +131,7 @@ public class Main {
             System.out.println("\n" + "[Test] find by reiziger");
             System.out.println("We gebruiken deze reizger: " + sietske +"\n dus het adres is: ");
             adao.findByReiziger(sietske);
+
             //delete
             System.out.println("\n" + "[Test] delete adres");
             adressen = adao.findAll();
@@ -143,9 +152,11 @@ public class Main {
             String geldigdatum = "2025-11-07";
             Reiziger sietske = new Reiziger(77, "S", "", "Boers", java.sql.Date.valueOf(gbdatum));
             rdao.save(sietske);
-            OVChipkaart siets = new OVChipkaart(69, java.sql.Date.valueOf(geldigdatum), 1, 25, sietske);
-            //pak alle kaarten
+            OVChipkaart siets = new OVChipkaart(69, Date.valueOf(geldigdatum), 1, 25, sietske);
+            List<OVChipkaart> ovchips = new ArrayList<>();
+           ovchips.add(siets);
 
+            //pak alle kaarten
             System.out.println("[Test] OVCHipkaartdao.findAll() geeft de volgende adressen:");
             List<OVChipkaart> ovchipkaarten = ovdao.findAll();
             for (OVChipkaart a : ovchipkaarten) {
@@ -154,7 +165,7 @@ public class Main {
 
             // Maak een nieuwe kaart aan en persisteer deze in de database
             System.out.print("[Test] Eerst " + ovchipkaarten.size() + " adressen, na OVChipkaartenDAO.save() ");
-            ovdao.save(siets);
+            ovdao.save( ovchips);
             ovchipkaarten = ovdao.findAll();
             System.out.println(ovchipkaarten.size() + " kaarten\n");
 
@@ -164,7 +175,9 @@ public class Main {
             System.out.println("kaart was: " + siets);
             String testDatum = "2066-11-14";
             OVChipkaart test = new OVChipkaart(69, java.sql.Date.valueOf(testDatum), 2, 6,  sietske);
-            ovdao.update(test);
+            List<OVChipkaart> testlist = new ArrayList<>();
+            testlist.add(test);
+            ovdao.update(testlist);
             System.out.println("adres is nu: ");
             ovdao.findbyReiziger(sietske);
 
@@ -172,6 +185,7 @@ public class Main {
             System.out.println("\n" + "[Test] find by reiziger");
             System.out.println("We gebruiken deze reizger: " + sietske +"\n dus de kaart is: ");
             ovdao.findbyReiziger(sietske);
+
             //findByid test
             System.out.println("[Test] vinden bij ID");
             System.out.println("Het id is:" + siets.getKaart_nummer());
@@ -181,10 +195,11 @@ public class Main {
             System.out.println("\n" + "[Test] delete kaart");
             ovchipkaarten = ovdao.findAll();
             System.out.println(ovchipkaarten.size() + " kaarten\n");
-            ovdao.delete(test);
+            ovdao.delete( testlist);
             ovchipkaarten = ovdao.findAll();
             System.out.println(ovchipkaarten.size() + " kaarten\n");
             rdao.delete(sietske);
+
 
         }
         catch(Exception e){

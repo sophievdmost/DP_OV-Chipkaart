@@ -1,4 +1,6 @@
-package domain;
+package domain.domein;
+
+import domain.interfaces.Reiziger;
 
 public class Adres {
     private int id;

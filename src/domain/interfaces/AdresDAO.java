@@ -1,4 +1,6 @@
-package domain;
+package domain.interfaces;
+
+import domain.domein.Adres;
 
 import java.util.List;
 

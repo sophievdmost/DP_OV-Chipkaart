@@ -1,4 +1,6 @@
-package domain;
+package domain.domein;
+
+import domain.interfaces.Reiziger;
 
 import java.sql.Date;
 

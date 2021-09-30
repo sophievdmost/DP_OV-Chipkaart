@@ -1,4 +1,9 @@
-package domain;
+package domain.DAO;
+
+import domain.domein.Adres;
+import domain.interfaces.Reiziger;
+import domain.interfaces.AdresDAO;
+import domain.interfaces.ReizigerDAO;
 
 import java.sql.*;
 import java.util.ArrayList;

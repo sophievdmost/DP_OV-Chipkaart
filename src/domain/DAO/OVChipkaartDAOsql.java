@@ -1,4 +1,9 @@
-package domain;
+package domain.DAO;
+
+import domain.domein.OVChipkaart;
+import domain.interfaces.Reiziger;
+import domain.interfaces.OVChipkaartDAO;
+import domain.interfaces.ReizigerDAO;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -19,16 +24,17 @@ public class OVChipkaartDAOsql implements OVChipkaartDAO {
     }
 
     @Override
-    public boolean save(OVChipkaart ovChipkaart) throws SQLException {
+    public boolean save(List<OVChipkaart> ovChipkaart) throws SQLException {
         try{
             PreparedStatement stat = myConn.prepareStatement("INSERT INTO ov_chipkaart (kaart_nummer, geldig_tot,klasse, saldo, reiziger_id)" +
                     "VALUES (?,?,?,?,?)");
-            stat.setInt(1, ovChipkaart.getKaart_nummer());
-            stat.setDate(2, ovChipkaart.getGeldig_tot());
-            stat.setInt(3, ovChipkaart.getKlasse());
-            stat.setInt(4, ovChipkaart.getSaldo());
-            stat.setInt(5, ovChipkaart.getReisigerid());
-            stat.executeUpdate();
+            for (OVChipkaart ovchip : ovChipkaart) {
+            stat.setInt(1, ovchip.getKaart_nummer());
+            stat.setDate(2, ovchip.getGeldig_tot());
+            stat.setInt(3, ovchip.getKlasse());
+            stat.setInt(4, ovchip.getSaldo());
+            stat.setInt(5, ovchip.getReisigerid());
+            stat.executeUpdate();}
             return true;
         }
         catch(Exception e){
@@ -40,15 +46,16 @@ public class OVChipkaartDAOsql implements OVChipkaartDAO {
 
 
     @Override
-    public boolean update(OVChipkaart ovChipkaart) {
+    public boolean update(List<OVChipkaart> ovChipkaart) {
         try{
             PreparedStatement stat = myConn.prepareStatement("UPDATE ov_chipkaart SET kaart_nummer = ?, geldig_tot= ? ,klasse = ?, saldo =? WHERE reiziger_id = ?");
-            stat.setInt(1, ovChipkaart.getKaart_nummer());
-            stat.setDate(2, ovChipkaart.getGeldig_tot());
-            stat.setInt(3, ovChipkaart.getKlasse());
-            stat.setInt(4, ovChipkaart.getSaldo());
-            stat.setInt(5, ovChipkaart.getReisigerid());
-            stat.executeUpdate();
+            for (OVChipkaart ovchip : ovChipkaart) {
+            stat.setInt(1, ovchip.getKaart_nummer());
+            stat.setDate(2, ovchip.getGeldig_tot());
+            stat.setInt(3, ovchip.getKlasse());
+            stat.setInt(4, ovchip.getSaldo());
+            stat.setInt(5, ovchip.getReisigerid());
+            stat.executeUpdate();}
             return true;
         }
         catch(Exception e){
@@ -59,11 +66,12 @@ public class OVChipkaartDAOsql implements OVChipkaartDAO {
     }
 
     @Override
-    public boolean delete(OVChipkaart ovChipkaart) {
+    public boolean delete(List<OVChipkaart> ovChipkaart) {
         try{
             PreparedStatement st = myConn.prepareStatement("DELETE FROM ov_chipkaart WHERE reiziger_id = ?");
-            st.setInt(1, ovChipkaart.getReisigerid());
-            st.executeUpdate();
+            for (OVChipkaart ovchip : ovChipkaart) {
+            st.setInt(1, ovchip.getReisigerid());
+            st.executeUpdate();}
             return true;
         }
         catch(Exception e){
