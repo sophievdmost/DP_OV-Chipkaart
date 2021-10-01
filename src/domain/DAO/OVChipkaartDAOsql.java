@@ -1,7 +1,7 @@
 package domain.DAO;
 
 import domain.domein.OVChipkaart;
-import domain.interfaces.Reiziger;
+import domain.domein.Reiziger;
 import domain.interfaces.OVChipkaartDAO;
 import domain.interfaces.ReizigerDAO;
 
@@ -134,6 +134,8 @@ public class OVChipkaartDAOsql implements OVChipkaartDAO {
             return null;
         }
     }
+
+
 
     @Override
     public List<OVChipkaart> findbyReiziger(Reiziger reiziger) {

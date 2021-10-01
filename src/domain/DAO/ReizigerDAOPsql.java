@@ -2,7 +2,7 @@ package domain.DAO;
 
 import domain.domein.Adres;
 import domain.domein.OVChipkaart;
-import domain.interfaces.Reiziger;
+import domain.domein.Reiziger;
 import domain.interfaces.AdresDAO;
 import domain.interfaces.OVChipkaartDAO;
 import domain.interfaces.ReizigerDAO;
@@ -30,7 +30,7 @@ public class ReizigerDAOPsql implements ReizigerDAO {
     }
 
     @Override
-    public boolean save(Reiziger reiziger) {
+    public boolean save(domain.domein.Reiziger reiziger) {
         try{
         PreparedStatement stat = myConn.prepareStatement("INSERT INTO reiziger ( reiziger_id, voorletters, tussenvoegsel,achternaam, geboortedatum)" +
         "VALUES (?,?,?,?,?)");
@@ -81,7 +81,7 @@ public class ReizigerDAOPsql implements ReizigerDAO {
     }
 
     @Override
-    public boolean delete(Reiziger reiziger) {
+    public boolean delete(domain.domein.Reiziger reiziger) {
         try{
             if(reiziger.getAdres() != null){
                 AdresDAOsql adaop = new AdresDAOsql(myConn);
@@ -139,12 +139,12 @@ public class ReizigerDAOPsql implements ReizigerDAO {
     @Override
     public List<Reiziger> findByGbdatum(String datum) {
         try{
-            List<Reiziger> reizigerList = new ArrayList<Reiziger>();
+            List<domain.domein.Reiziger> reizigerList = new ArrayList<domain.domein.Reiziger>();
             Statement stat = myConn.createStatement();
             ResultSet set = stat.executeQuery("SELECT * FROM reiziger");
             while(set.next()){
                 if(set.getDate(5).equals(Date.valueOf(datum))){
-                    Reiziger reiz = new Reiziger(set.getInt(1),
+                    domain.domein.Reiziger reiz = new domain.domein.Reiziger(set.getInt(1),
                             set.getString(2),
                             set.getString(3),
                             set.getString(4),
@@ -173,11 +173,11 @@ public class ReizigerDAOPsql implements ReizigerDAO {
     @Override
     public List<Reiziger> findAll() {
         try{
-            List<Reiziger> reizigerList = new ArrayList<Reiziger>();
+            List<domain.domein.Reiziger> reizigerList = new ArrayList<domain.domein.Reiziger>();
             Statement stat = myConn.createStatement();
             ResultSet set = stat.executeQuery("SELECT * FROM reiziger");
             while(set.next()){
-                Reiziger reiz = new Reiziger(set.getInt(1),
+                domain.domein.Reiziger reiz = new Reiziger(set.getInt(1),
                         set.getString(2),
                         set.getString(3),
                         set.getString(4),

@@ -1,6 +1,7 @@
 package domain.interfaces;
 
 import domain.domein.Adres;
+import domain.domein.Reiziger;
 
 import java.util.List;
 

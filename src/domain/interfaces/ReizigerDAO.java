@@ -1,5 +1,7 @@
 package domain.interfaces;
 
+import domain.domein.Reiziger;
+
 import java.sql.SQLException;
 import java.util.List;
 

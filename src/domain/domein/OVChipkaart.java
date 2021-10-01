@@ -1,8 +1,7 @@
 package domain.domein;
 
-import domain.interfaces.Reiziger;
-
 import java.sql.Date;
+import java.util.List;
 
 public class OVChipkaart {
     private int kaart_nummer;
@@ -10,6 +9,7 @@ public class OVChipkaart {
     private int klasse;
     private int saldo;
     private Reiziger reiziger;
+    private List<Product > producten;
 
 
     public OVChipkaart(int kaart_nummer, Date geldig_tot, int klasse, int saldo, Reiziger reiziger) {
@@ -58,6 +58,22 @@ public class OVChipkaart {
 
     public void setReisigerid(int reisigerid) {
         reiziger.setId(reisigerid);
+    }
+
+    public Reiziger getReiziger() {
+        return reiziger;
+    }
+
+    public void setReiziger(Reiziger reiziger) {
+        this.reiziger = reiziger;
+    }
+
+    public List<Product> getProducten() {
+        return producten;
+    }
+
+    public void setProducten(List<Product> producten) {
+        this.producten = producten;
     }
 
     @Override

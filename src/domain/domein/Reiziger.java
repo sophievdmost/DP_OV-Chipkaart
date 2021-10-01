@@ -1,8 +1,5 @@
 package domain.domein;
 
-import domain.domein.Adres;
-import domain.domein.OVChipkaart;
-
 import java.sql.Date;
 import java.util.List;
 
@@ -15,8 +12,8 @@ public class Reiziger {
     private Adres adres;
     private List<OVChipkaart> ovChipkaart;
 
-    public Reiziger(int id, String voorletters, String tussenvoegsel, String achternaam, Date geboortedatum){
-        this.id= id;
+    public Reiziger(int id, String voorletters, String tussenvoegsel, String achternaam, Date geboortedatum) {
+        this.id = id;
         this.voorletters = voorletters;
         this.tussenvoegsel = tussenvoegsel;
         this.achternaam = achternaam;

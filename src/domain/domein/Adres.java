@@ -1,14 +1,12 @@
 package domain.domein;
 
-import domain.interfaces.Reiziger;
-
 public class Adres {
     private int id;
     private String postcode;
     private String huisnummer;
     private String straat;
     private String woonplaats;
-    private Reiziger reiziger;
+    private domain.domein.Reiziger reiziger;
 
     public Adres(int id, String postcode, String huisnummer, String straat, String woonplaats, Reiziger reiziger) {
         this.id = id;

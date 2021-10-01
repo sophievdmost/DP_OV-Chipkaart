@@ -1,7 +1,7 @@
 package domain.DAO;
 
 import domain.domein.Adres;
-import domain.interfaces.Reiziger;
+import domain.domein.Reiziger;
 import domain.interfaces.AdresDAO;
 import domain.interfaces.ReizigerDAO;
 
