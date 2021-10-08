@@ -173,7 +173,7 @@ public class Main {
 
             // Maak een nieuwe kaart aan en persisteer deze in de database
             System.out.print("[Test] Eerst " + ovchipkaarten.size() + " adressen, na OVChipkaartenDAO.save() ");
-            ovdao.save( ovchips);
+            ovdao.save(siets);
             ovchipkaarten = ovdao.findAll();
             System.out.println(ovchipkaarten.size() + " kaarten\n");
 
@@ -185,7 +185,7 @@ public class Main {
             OVChipkaart test = new OVChipkaart(69, java.sql.Date.valueOf(testDatum), 2, 6,  sietske);
             List<OVChipkaart> testlist = new ArrayList<>();
             testlist.add(test);
-            ovdao.update(testlist);
+            ovdao.update(test);
             System.out.println("adres is nu: ");
             ovdao.findbyReiziger(sietske);
 
@@ -203,7 +203,7 @@ public class Main {
             System.out.println("\n" + "[Test] delete kaart");
             ovchipkaarten = ovdao.findAll();
             System.out.println(ovchipkaarten.size() + " kaarten\n");
-            ovdao.delete( testlist);
+            ovdao.delete( test);
             ovchipkaarten = ovdao.findAll();
             System.out.println(ovchipkaarten.size() + " kaarten\n");
             rdao.delete(sietske);

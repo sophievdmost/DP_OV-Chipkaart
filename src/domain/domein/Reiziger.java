@@ -28,7 +28,7 @@ public class Reiziger {
         this.adres = adres;
     }
 
-    public List<OVChipkaart> getOvChipkaart() {
+    public OVChipkaart getOvChipkaart() {
         return ovChipkaart;
     }
 
