@@ -34,17 +34,18 @@ public class ReizigerDAOPsql implements ReizigerDAO {
         try{
         PreparedStatement stat = myConn.prepareStatement("INSERT INTO reiziger ( reiziger_id, voorletters, tussenvoegsel,achternaam, geboortedatum)" +
         "VALUES (?,?,?,?,?)");
-        if(reiziger.getAdres() != null){
-                adao.save(reiziger.getAdres());
-            }
-        if (reiziger.getOvChipkaart() != null){
-            ovdao.save(reiziger.getOvChipkaart());
-        }
+
         stat.setInt(1, reiziger.getId());
         stat.setString(2, reiziger.getVoorletters());
         stat.setString(3, reiziger.getTussenvoegsel());
         stat.setString(4, reiziger.getAchternaam());
         stat.setDate(5, reiziger.getGeboortedatum());
+            if(reiziger.getAdres() != null){
+                adao.save(reiziger.getAdres());
+            }
+            if (reiziger.getOvChipkaart() != null){
+                ovdao.save(reiziger.getOvChipkaart());
+            }
         stat.executeUpdate();
         return true;
         }
@@ -59,17 +60,18 @@ public class ReizigerDAOPsql implements ReizigerDAO {
     public boolean update(Reiziger reiziger) {
         try{
             PreparedStatement stat = myConn.prepareStatement("UPDATE reiziger SET voorletters = ?, tussenvoegsel = ? ,achternaam = ?, geboortedatum =? WHERE reiziger_id = ?");
+
+            stat.setString(1, reiziger.getVoorletters());
+            stat.setString(2, reiziger.getTussenvoegsel());
+            stat.setString(3, reiziger.getAchternaam());
+            stat.setDate(4, reiziger.getGeboortedatum());
+            stat.setInt(5, reiziger.getId());
             if(reiziger.getAdres() != null){
                 adao.update(reiziger.getAdres());
             }
             if (reiziger.getOvChipkaart() != null){
                 ovdao.update(reiziger.getOvChipkaart());
             }
-            stat.setString(1, reiziger.getVoorletters());
-            stat.setString(2, reiziger.getTussenvoegsel());
-            stat.setString(3, reiziger.getAchternaam());
-            stat.setDate(4, reiziger.getGeboortedatum());
-            stat.setInt(5, reiziger.getId());
             stat.executeUpdate();
             return true;
         }
