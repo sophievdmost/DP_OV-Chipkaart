@@ -29,7 +29,7 @@ public class Reiziger {
     }
 
     public OVChipkaart getOvChipkaart() {
-        return ovChipkaart;
+        return (OVChipkaart) ovChipkaart;
     }
 
     public void setOvChipkaart(OVChipkaart ovChipkaart) {

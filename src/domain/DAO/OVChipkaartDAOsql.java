@@ -38,11 +38,12 @@ public class OVChipkaartDAOsql implements OVChipkaartDAO {
 
             PreparedStatement stat2 = myConn.prepareStatement("INSERT INTO ov_chipkaart_product (kaart_nummer, product_nummer)" +
                     "VALUES (?,?)");{
+            if (ov.getProducten() != null)        {
             for (Product product : ov.getProducten()){
                 stat2.setInt(1, ov.getKaart_nummer());
                 stat2.setInt(2, product.getProduct_nummer());
                 stat2.executeUpdate();
-            }}
+            }}}
             return true;
         }
         catch(Exception e){
@@ -64,37 +65,37 @@ public class OVChipkaartDAOsql implements OVChipkaartDAO {
             stat.setInt(4, ovchip.getSaldo());
             stat.setInt(5, ovchip.getReisigerid());
             stat.executeUpdate();
-
-            ArrayList<Integer> OBproductNummers = new ArrayList<Integer>();
-            for(Product product : ovchip.getProducten()){
-                OBproductNummers.add(product.getProduct_nummer());
-            }
-
-            ArrayList<Integer> DBproductNumemrs = new ArrayList<>();
-            PreparedStatement stat2 = myConn.prepareStatement("SElECT product_nummer from ov_chipkaart_product WHERE kaart_nummer = ?");
-            stat2.setInt(1, ovchip.getKaart_nummer());
-            ResultSet rs = stat2.executeQuery();
-            while(rs.next()){
-                int productnummer = rs.getInt("product_nummer");
-                DBproductNumemrs.add(productnummer);
-            }
-
-            for(int productnummer : OBproductNummers){
-                if (!DBproductNumemrs.contains(productnummer)){
-                    PreparedStatement stat3 = myConn.prepareStatement("INSERT INTO ov_chipkaart_product (kaart_nummer, product_nummer) VALUES (?,?)");
-                    stat3.setInt(1,ovchip.getKaart_nummer());
-                    stat3.setInt(2,productnummer);
-                    stat3.executeUpdate();
-                }
-            }
-            for(int productnummer : DBproductNumemrs)
-                if (OBproductNummers.contains(productnummer)){
-                    PreparedStatement stat4 = myConn.prepareStatement("DELETE FROM ov_chipkaart_product WHERE product_nummer = ? AND kaart_nummer = ?");
-                    stat4.setInt(1, productnummer);
-                    stat4.setInt(2, ovchip.getKaart_nummer());
-                    stat4.executeUpdate();
+            if (ovchip.getProducten() != null) {
+                ArrayList<Integer> OBproductNummers = new ArrayList<Integer>();
+                for (Product product : ovchip.getProducten()) {
+                    OBproductNummers.add(product.getProduct_nummer());
                 }
 
+                ArrayList<Integer> DBproductNumemrs = new ArrayList<>();
+                PreparedStatement stat2 = myConn.prepareStatement("SElECT product_nummer from ov_chipkaart_product WHERE kaart_nummer = ?");
+                stat2.setInt(1, ovchip.getKaart_nummer());
+                ResultSet rs = stat2.executeQuery();
+                while (rs.next()) {
+                    int productnummer = rs.getInt("product_nummer");
+                    DBproductNumemrs.add(productnummer);
+                }
+
+                for (int productnummer : OBproductNummers) {
+                    if (!DBproductNumemrs.contains(productnummer)) {
+                        PreparedStatement stat3 = myConn.prepareStatement("INSERT INTO ov_chipkaart_product (kaart_nummer, product_nummer) VALUES (?,?)");
+                        stat3.setInt(1, ovchip.getKaart_nummer());
+                        stat3.setInt(2, productnummer);
+                        stat3.executeUpdate();
+                    }
+                }
+                for (int productnummer : DBproductNumemrs)
+                    if (OBproductNummers.contains(productnummer)) {
+                        PreparedStatement stat4 = myConn.prepareStatement("DELETE FROM ov_chipkaart_product WHERE product_nummer = ? AND kaart_nummer = ?");
+                        stat4.setInt(1, productnummer);
+                        stat4.setInt(2, ovchip.getKaart_nummer());
+                        stat4.executeUpdate();
+                    }
+            }
             return true;
         }
         catch(Exception e){
@@ -110,12 +111,13 @@ public class OVChipkaartDAOsql implements OVChipkaartDAO {
             PreparedStatement st = myConn.prepareStatement("DELETE FROM ov_chipkaart WHERE reiziger_id = ?");
             st.setInt(1, ovchip.getReisigerid());
             st.executeUpdate();
+            if (ovchip.getProducten() != null){
             PreparedStatement stat2 = myConn.prepareStatement("DELETE FROM ov_chipkaart_product WHERE kaart_nummer = ? AND product_nummer = ?"); {
                 for (Product product : ovchip.getProducten()){
                     stat2.setInt(1, ovchip.getKaart_nummer());
                     stat2.setInt(2, product.getProduct_nummer());
                     stat2.executeUpdate();
-                }}
+                }}}
             return true;
         }
         catch(Exception e){
