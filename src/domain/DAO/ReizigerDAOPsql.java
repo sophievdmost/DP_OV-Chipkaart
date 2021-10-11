@@ -32,6 +32,7 @@ public class ReizigerDAOPsql implements ReizigerDAO {
     @Override
     public boolean save(domain.domein.Reiziger reiziger) {
         try{
+            ///eerst reiziger saven
         PreparedStatement stat = myConn.prepareStatement("INSERT INTO reiziger ( reiziger_id, voorletters, tussenvoegsel,achternaam, geboortedatum)" +
         "VALUES (?,?,?,?,?)");
 
@@ -40,6 +41,7 @@ public class ReizigerDAOPsql implements ReizigerDAO {
         stat.setString(3, reiziger.getTussenvoegsel());
         stat.setString(4, reiziger.getAchternaam());
         stat.setDate(5, reiziger.getGeboortedatum());
+        /// daarna adres en ovchipkaart
             if(reiziger.getAdres() != null){
                 adao.save(reiziger.getAdres());
             }
@@ -59,6 +61,7 @@ public class ReizigerDAOPsql implements ReizigerDAO {
     @Override
     public boolean update(Reiziger reiziger) {
         try{
+            /// eerst reiziger
             PreparedStatement stat = myConn.prepareStatement("UPDATE reiziger SET voorletters = ?, tussenvoegsel = ? ,achternaam = ?, geboortedatum =? WHERE reiziger_id = ?");
 
             stat.setString(1, reiziger.getVoorletters());
@@ -66,6 +69,8 @@ public class ReizigerDAOPsql implements ReizigerDAO {
             stat.setString(3, reiziger.getAchternaam());
             stat.setDate(4, reiziger.getGeboortedatum());
             stat.setInt(5, reiziger.getId());
+
+            /// daarna adres en ovchipkaart
             if(reiziger.getAdres() != null){
                 adao.update(reiziger.getAdres());
             }
@@ -85,6 +90,7 @@ public class ReizigerDAOPsql implements ReizigerDAO {
     @Override
     public boolean delete(domain.domein.Reiziger reiziger) {
         try{
+            /// eerst de FK uit andere tabellen
             if(reiziger.getAdres() != null){
                 AdresDAOsql adaop = new AdresDAOsql(myConn);
                 adaop.delete(reiziger.getAdres());
@@ -92,6 +98,7 @@ public class ReizigerDAOPsql implements ReizigerDAO {
             if (reiziger.getOvChipkaart() != null){
                 ovdao.delete(reiziger.getOvChipkaart());
             }
+            /// dan pas de reiziger
             PreparedStatement st = myConn.prepareStatement("DELETE FROM reiziger WHERE reiziger_id = ?");
             st.setInt(1, reiziger.getId());
             st.executeUpdate();
